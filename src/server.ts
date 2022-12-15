@@ -5,6 +5,7 @@ import { IEditedJob, IJob } from './interfaces.js';
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 const port = 3011;
 
 app.get('/', (req: express.Request, res: express.Response) => {
