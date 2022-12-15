@@ -4,6 +4,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { Low } from 'lowdb';
 import { JSONFile } from 'lowdb/node';
+import { IEditedJob } from './interfaces.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dbFile = join(__dirname, `../src/data/db.json`);
@@ -102,4 +103,18 @@ export const deleteJob = async (id: number) => {
 	db.data.jobs = db.data.jobs.filter((m: IJob) => m.id !== id);
 	await db.write();
 	return deletedObject;
+}
+
+export const saveEditedJob = async (editedJob: IEditedJob) => {
+    const job: IJob = db.data.jobs.find((m: IJob) => m.id === editedJob.id);
+ 
+    job.title = editedJob.title;
+    job.company = editedJob.company;
+    job.url = editedJob.url;
+    job.description = editedJob.description;
+    job.skillList = editedJob.skillList;
+    job.todo = editedJob.todo;
+ 
+    await db.write();
+    return job;
 }

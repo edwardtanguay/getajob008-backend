@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import * as model from './model.js';
+import { IEditedJob, IJob } from './interfaces.js';
 
 const app = express();
 app.use(cors());
@@ -32,6 +33,16 @@ app.delete('/jobs/:id', async (req: express.Request, res: express.Response) => {
 		})
 	} else {
 		res.status(200).json(deletedObject);
+	}
+});
+
+app.patch('/job', async (req: express.Request, res: express.Response) => {
+	const editedJob: IEditedJob = req.body;
+	const job: IJob = await model.saveEditedJob(editedJob);
+	if (job) {
+		res.status(200).send('ok');
+	} else {
+		res.status(500).send('job did not save');
 	}
 });
 
